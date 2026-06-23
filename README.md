@@ -141,7 +141,7 @@ Install the following software:
 ### Clone the Repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/mptrv01/SmartExpenseTracker.git
 cd SmartExpenseTracker
 ```
 
@@ -271,7 +271,7 @@ GET /api/transactions
 | `startDate` | Filter from a selected date |
 | `endDate` | Filter until a selected date |
 
-Example:
+Example: 
 
 ```text
 /api/transactions?category=Food&search=lunch&startDate=2026-01-01
