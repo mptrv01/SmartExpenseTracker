@@ -1,26 +1,17 @@
 import api from "./api";
 
-const getAuthHeaders = () => ({
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
-
 export const getTransactions = (params) => {
-  return api.get("/transactions", {
-    params,
-    ...getAuthHeaders(),
-  });
+  return api.get("/transactions", { params });
 };
 
 export const addTransaction = (transactionData) => {
-  return api.post("/transactions", transactionData, getAuthHeaders());
+  return api.post("/transactions", transactionData);
 };
 
 export const updateTransaction = (id, transactionData) => {
-  return api.put(`/transactions/${id}`, transactionData, getAuthHeaders());
+  return api.put(`/transactions/${id}`, transactionData);
 };
 
 export const deleteTransaction = (id) => {
-  return api.delete(`/transactions/${id}`, getAuthHeaders());
+  return api.delete(`/transactions/${id}`);
 };

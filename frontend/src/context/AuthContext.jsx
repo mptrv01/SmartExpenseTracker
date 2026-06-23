@@ -1,53 +1,54 @@
-import { createContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useEffect,
+  useState,
+} from "react";
+
 import api from "../services/api";
 
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-  const getProfile = async () => {
-    const token = localStorage.getItem("token");
+    const loadUserProfile = async () => {
+      const token = localStorage.getItem("token");
 
-    if (!token) return;
+      if (!token) {
+        setAuthLoading(false);
+        return;
+      }
 
-    try {
-      const response = await api.get("/auth/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        const response = await api.get("/auth/profile");
+        setUser(response.data);
+      } catch (error) {
+        localStorage.removeItem("token");
+        setUser(null);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
 
-      setUser(response.data);
-    } catch (error) {
-      localStorage.removeItem("token");
-      setUser(null);
-    }
-  };
-
-  getProfile();
-}, []);
+    loadUserProfile();
+  }, []);
 
   const register = async (name, email, password) => {
-    try {
-      const response = await api.post("/auth/register", {
-        name,
-        email,
-        password,
-      });
+    const response = await api.post("/auth/register", {
+      name,
+      email,
+      password,
+    });
 
-      localStorage.setItem("token", response.data.token);
-      setUser(response.data);
+    localStorage.setItem("token", response.data.token);
+    setUser(response.data);
 
-      return response.data;
-    } catch (error) {
-      console.log(error.response?.data || error.message);
-    }
+    return response.data;
   };
 
   const login = async (email, password) => {
-  try {
     const response = await api.post("/auth/login", {
       email,
       password,
@@ -57,29 +58,26 @@ function AuthProvider({ children }) {
     setUser(response.data);
 
     return response.data;
-  } catch (error) {
-    console.log(error.response?.data || error.message);
-  }
-};
+  };
 
-const logout = () => {
-  localStorage.removeItem("token");
-  setUser(null);
-};
-
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider
-     value={{
-      user,  
-      setUser,
-      register,
-      login,
-      logout,
-}}
+      value={{
+        user,
+        authLoading,
+        register,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
+
 export default AuthProvider;

@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthContext";
 
-function ProtectedRoute({ children }) {
+function PublicRoute({ children }) {
   const { user, authLoading } = useContext(AuthContext);
 
   if (authLoading) {
@@ -14,11 +14,11 @@ function ProtectedRoute({ children }) {
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
 }
 
-export default ProtectedRoute;
+export default PublicRoute;

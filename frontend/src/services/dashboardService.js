@@ -1,27 +1,11 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api/transactions";
+import api from "./api";
 
 export const getDashboardStats = async () => {
-  const token = localStorage.getItem("token");
-
-  const response = await axios.get(`${API_URL}/stats`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
+  const response = await api.get("/transactions/stats");
   return response.data;
 };
 
 export const getRecentTransactions = async () => {
-  const token = localStorage.getItem("token");
-
-  const response = await axios.get(`${API_URL}/recent`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
+  const response = await api.get("/transactions/recent");
   return response.data;
 };
