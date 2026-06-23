@@ -6,8 +6,8 @@ The project was built as a portfolio application demonstrating full-stack develo
 
 ## Live Demo
 
-- Frontend: Coming soon
-- Backend API: Coming soon
+- Frontend: https://smart-expense-tracker-five-plum.vercel.app
+- Backend API: https://smart-expense-tracker-api-wmbc.onrender.com
 
 ## Features
 
